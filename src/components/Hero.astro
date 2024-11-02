@@ -1,0 +1,44 @@
+---
+---
+<video
+    id="video"
+    autoplay
+    muted
+    width="640"
+    height="480"
+    crossorigin="anonymous"
+></video>
+
+<script>
+	import Hls from 'hls.js';
+
+	window.addEventListener("DOMContentLoaded", () => {
+		const video = document.getElementById("video") as HTMLVideoElement
+		// console.log(video)
+
+		if (Hls.isSupported() && video) {
+			console.log('supported vid')
+			const hls = new Hls();
+			hls.loadSource('https://webcam.treyhardin.com/playlist.m3u8');
+			hls.attachMedia(video);
+			hls.on(Hls.Events.MANIFEST_PARSED, () => {
+				video.play();
+			});
+			} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+				// For Safari or other browsers that support HLS natively
+				video.src = 'https://webcam.treyhardin.com/playlist.m3u8';
+				video.play();
+			}
+	})
+</script>
+
+<style>
+    #video {
+        width: 100%;
+        max-width: 100%;
+        /* aspect-ratio: 4 / 3; */
+        height: auto;
+        filter: grayscale(1) brightness(0.5);
+        /* -webkit-filter: grayscale(1) contrast(0.4); */
+    }
+</style>
